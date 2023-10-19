@@ -60,7 +60,7 @@ void print_file_info(const char* filename, const char* entry) {
     const unsigned int access_mode_octal = file_stat.st_mode;
     char *access_mode_str = mode_to_str(file_stat.st_mode);
     printf("Access mode in octal: %o\n", access_mode_octal);
-    printf("Access mode as string: %s\n", access_mode_str);
+    printf("Access mode flags: %s\n", access_mode_str);
 
     printf("\n");
 }
@@ -81,8 +81,8 @@ int main(int argc, char* argv[]) {
     }
 
     while ((entry = readdir(dir)) != NULL) {
-        char full_path[256];
-        snprintf(full_path, 256, "%s/%s", directory_path, entry->d_name);
+        char full_path[258]; // maximum path length size
+        snprintf(full_path, sizeof(full_path), "%s/%s", directory_path, entry->d_name);
 
         print_file_info(full_path, entry->d_name);
     }
