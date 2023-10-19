@@ -29,35 +29,35 @@ char *mode_to_str(mode_t mode) {
     return str;
 }
 
-void print_file_info(const char* filename) {
+void print_file_info(const char* filename, const char* entry) {
     struct stat file_stat;
     if (lstat(filename, &file_stat) == -1) {
         perror("lstat");
         return;
     }
 
-    printf("File: %s\n", filename);
-    printf("inode number: %ld\n", (long)file_stat.st_ino);
-    printf("number of links: %ld\n", (long)file_stat.st_nlink);
+    printf("File name: %s\n", entry);
+    printf("inode number: %ld\n", file_stat.st_ino);
+    printf("number of links: %ld\n", file_stat.st_nlink);
     printf("User ID of owner: %d\n", file_stat.st_uid);
     printf("Group ID of owner: %d\n", file_stat.st_gid);
-    printf("Size in bytes: %ld\n", (long)file_stat.st_size);
+    printf("Size in bytes: %ld bytes\n", file_stat.st_size);
 
-    char access_time[26];
-    strftime(access_time, 25, "%a %b %e %H:%M:%S %G", localtime(&file_stat.st_atime));
+    char access_time[27];
+    strftime(access_time, 26, "%a %b  %e %H:%M:%S %G", localtime(&file_stat.st_atime));
     printf("Last access: %s\n", access_time);
 
-    char modify_time[26];
-    strftime(modify_time, 25, "%a %b %e %H:%M:%S %G", localtime(&file_stat.st_mtime));
+    char modify_time[27];
+    strftime(modify_time, 26, "%a %b  %e %H:%M:%S %G", localtime(&file_stat.st_mtime));
     printf("Last modification: %s\n", modify_time);
 
-    char change_time[26];
-    strftime(change_time, 25, "%a %b %e %H:%M:%S %G", localtime(&file_stat.st_ctime));
+    char change_time[27];
+    strftime(change_time, 26, "%a %b  %e %H:%M:%S %G", localtime(&file_stat.st_ctime));
     printf("Last status change: %s\n", change_time);
 
-    printf("Number of blocks allocated: %ld\n", file_stat.st_blocks);
+    printf("Number of disk blocks allocated: %ld\n", file_stat.st_blocks);
 
-    const unsigned int access_mode_octal = (unsigned int) file_stat.st_mode;
+    const unsigned int access_mode_octal = file_stat.st_mode;
     char *access_mode_str = mode_to_str(file_stat.st_mode);
     printf("Access mode in octal: %o\n", access_mode_octal);
     printf("Access mode as string: %s\n", access_mode_str);
@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
         char full_path[PATH_MAX];
         snprintf(full_path, PATH_MAX, "%s/%s", directory_path, entry->d_name);
 
-        print_file_info(full_path);
+        print_file_info(full_path, entry->d_name);
     }
 
     closedir(dir);
