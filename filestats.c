@@ -84,9 +84,7 @@ int main(int argc, char* argv[]) {
         char full_path[PATH_MAX];
         snprintf(full_path, PATH_MAX, "%s/%s", directory_path, entry->d_name);
 
-        if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
-            print_file_info(full_path);
-        }
+        print_file_info(full_path);
     }
 
     closedir(dir);
