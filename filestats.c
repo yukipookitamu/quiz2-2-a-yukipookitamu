@@ -81,8 +81,8 @@ int main(int argc, char* argv[]) {
     }
 
     while ((entry = readdir(dir)) != NULL) {
-        char full_path[PATH_MAX];
-        snprintf(full_path, PATH_MAX, "%s/%s", directory_path, entry->d_name);
+        char full_path[256];
+        snprintf(full_path, 256, "%s/%s", directory_path, entry->d_name);
 
         print_file_info(full_path, entry->d_name);
     }
